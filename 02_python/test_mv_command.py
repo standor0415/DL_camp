@@ -18,10 +18,13 @@ class TestMoveCommand(unittest.TestCase):
     def test_move_file(self):
         # Execute the move command
         command = MoveCommand(options=[], args=[self.source_file, self.dest_dir])
+        print(self.source_file)
+        print(self.dest_dir)
         command.execute()
 
         # Check if the file is moved
         moved_file = os.path.join(self.dest_dir, "test_file.txt")
+        print(moved_file)
         self.assertTrue(os.path.exists(moved_file))
 
     def tearDown(self):

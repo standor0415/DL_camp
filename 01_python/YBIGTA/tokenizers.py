@@ -4,7 +4,8 @@ from collections import Counter, defaultdict
 import re
 
 class BPETokenizer:
-    def __init__(self, corpus):
+    def __init__(self, corpus : Optional[Union[List[str], str]] = None) -> None :
+        
         self.corpus = []
         self.word_freqs = defaultdict(int)
         self.splits = {}

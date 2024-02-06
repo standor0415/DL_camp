@@ -44,20 +44,27 @@ class MoveCommand(BaseCommand):
         
         if text_print:
             print(f"mv: moving '{self.src_dic}' to '{self.des_dic}'")
+        
+        product = ''
+        if '/' in self.src_dic:
+            list = self.src_dic.split('/')
+            list = [word for word in list if word]
+            product = list[-1]
+        else:
+            product = self.src_dic
+            
             
         if '/' != self.des_dic[-1]:
             self.des_dic += '/'
-        dest = os.path.join(self.current_path, self.des_dic)
         try:
-            if self.file_exists(dest, self.src_dic):
+            if self.file_exists(self.des_dic, product):
                 if overwrite_file:
                     print(f"mv: overwrite '{self.des_dic}{self.src_dic}'? (y/n)")
                     command = input(": ")
                     if command == 'y':
-                        re_dest = os.path.join(dest, self.src_dic)
+                        re_dest = os.path.join(self.des_dic, product)
                         os.remove(re_dest)
-                        src = os.path.join(self.current_path, self.src_dic)
-                        shutil.copy(src, dest)
+                        shutil.move(self.src_dic, self.des_dic)
                     
                     else:
                         pass
@@ -66,12 +73,12 @@ class MoveCommand(BaseCommand):
                     print(f"mv: cannot move '{self.src_dic}' to '{self.des_dic}': Destination path '{self.des_dic}{self.src_dic}'\nalready exists")
                 
             else:
-                src = os.path.join(self.current_path, self.src_dic)
-                shutil.copy(src, dest)
+                shutil.move(self.src_dic, self.des_dic)
         except FileNotFoundError:
             pass
         except:
             pass
+    
                     
 
         
