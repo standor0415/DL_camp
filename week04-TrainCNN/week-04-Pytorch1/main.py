@@ -62,8 +62,10 @@ if __name__ == '__main__':
     #Loss, Optimizer setting
     logging.basicConfig(level=logging.INFO, filename=f'./save/{args.model}_{args.epoch}_{args.batch}_{args.learning_rate}/train_prog.log', 
                         filemode='w', format="%(asctime)s - %(levelname)s - %(message)s")
+    logging.info(f"logging start with device:{device}")
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = Adam(model.parameters(), lr=args.learning_rate)
+    model.to(device)
     
     for ep in range(args.epoch):
         model.train()
@@ -73,9 +75,9 @@ if __name__ == '__main__':
         for batch, data in enumerate(tqdm(train_loader)):
             images = data["input"]
             labels = data["target"]
-        
-            images.to(device)
-            labels.to(device)
+
+            images = images.to(device)
+            labels = labels.to(device)
             
             pred = model(images)
             loss = criterion(pred, labels)
@@ -101,8 +103,8 @@ if __name__ == '__main__':
                 labels = data["target"]
                 total += len(images)
                 
-                images.to(device)
-                labels.to(device)
+                images = images.to(device)
+                labels = labels.to(device)
                 
                 output = model(images)
                 
